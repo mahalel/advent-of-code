@@ -31,15 +31,11 @@
           pkgs.mkShell {
             # The Nix packages provided in the environment
             packages = [
-              pkgs.helix
               pkgs.nodePackages.prettier
               pkgs.pre-commit
               pkgs.ripgrep
-              pkgs.terraform-docs
               pkgs.tree
               pkgs.python311Packages.python-lsp-server
-              pkgs.delve
-              pkgs.ruff-lsp
               pkgs.fd
             ];
           };
