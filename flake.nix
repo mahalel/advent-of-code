@@ -36,6 +36,7 @@
               pkgs.ripgrep
               pkgs.tree
               pkgs.python311Packages.python-lsp-server
+              pkgs.python311Packages.pysnooper
               pkgs.fd
             ];
           };
