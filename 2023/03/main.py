@@ -43,9 +43,8 @@ def main(grid, symbols):
             neigh = set()
             start_index = match.start()
             end_index = match.end() - 1
-            indices = [start_index, end_index]
             number = int(grid[row][start_index:end_index+1])
-            for index in indices:
+            for index in [start_index, end_index]:
                 neighbors, gear = get_neighbors(grid, row, index)
                 neigh.update(neighbors)
                 gears[gear].update([number])
