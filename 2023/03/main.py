@@ -1,5 +1,4 @@
 import re
-import pysnooper
 from functools import reduce
 from operator import mul
 from collections import defaultdict
@@ -17,7 +16,6 @@ def get_symbols(input):
         symbols = set(re.findall(r"[^\d\.\n]", content))
     return symbols
  
-# @pysnooper.snoop()
 def get_neighbors(grid, x, y):
     neighbors = []
     gears = ""
@@ -36,11 +34,9 @@ def get_ratio(gears):
             ratio += reduce(mul, gears[gear])
     return ratio 
 
-# @pysnooper.snoop()
 def main(grid, symbols):
     total = 0
     gears = defaultdict(set)
-            
     for row in range(len(grid)):
         matches = re.finditer(r"\d+", grid[row])
         for match in matches:
@@ -49,20 +45,16 @@ def main(grid, symbols):
             end_index = match.end() - 1
             indices = [start_index, end_index]
             number = int(grid[row][start_index:end_index+1])
-
             for index in indices:
                 neighbors, gear = get_neighbors(grid, row, index)
                 neigh.update(neighbors)
                 gears[gear].update([number])
-                
             if neigh.intersection(symbols):
                 total += number
-
     gears.pop("") 
     ratio = get_ratio(gears)
     return total, ratio
 
-# input = "./example"
 input = "./input"
 symbols = get_symbols(input)
 grid = input_to_grid(input)
