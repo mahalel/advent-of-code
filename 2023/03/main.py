@@ -2,6 +2,7 @@ import re
 import pysnooper
 from functools import reduce
 from operator import mul
+from collections import defaultdict
 
 def input_to_grid(input):
     grid = []
@@ -9,7 +10,6 @@ def input_to_grid(input):
         for line in f.readlines():
             grid.append(line.strip())
     return grid
-
 
 def get_symbols(input):
     with open(input, "r") as f:
@@ -39,7 +39,7 @@ def get_ratio(gears):
 # @pysnooper.snoop()
 def main(grid, symbols):
     total = 0
-    gears = {}
+    gears = defaultdict(set)
             
     for row in range(len(grid)):
         matches = re.finditer(r"\d+", grid[row])
@@ -47,24 +47,18 @@ def main(grid, symbols):
             neigh = set()
             start_index = match.start()
             end_index = match.end() - 1
+            indices = [start_index, end_index]
             number = int(grid[row][start_index:end_index+1])
 
-            # Start Index            
-            neighbors, gear = get_neighbors(grid, row, start_index)
-            neigh.update(neighbors)
-            if gear != "":
-                gears.setdefault(gear, set())
-                gears[gear].update([number])
-            # End Index            
-            neighbors, gear = get_neighbors(grid, row, end_index)
-            neigh.update(neighbors)
-            if gear != "":
-                gears.setdefault(gear, set())
+            for index in indices:
+                neighbors, gear = get_neighbors(grid, row, index)
+                neigh.update(neighbors)
                 gears[gear].update([number])
                 
-            if neighbors.intersection(symbols):
+            if neigh.intersection(symbols):
                 total += number
-                 
+
+    gears.pop("") 
     ratio = get_ratio(gears)
     return total, ratio
 
